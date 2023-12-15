@@ -8,24 +8,22 @@ import { yupResolver } from "@hookform/resolvers/yup";
 
 export const Login = () => {
     const [data, setData] = useState({email: '', password: ''});
-    const [error, setError] = useState('');
+    const error = useSelector((store) => store.authReducer.error);
     const dispatch = useDispatch();
     const authenticated = useSelector((store) => store.authReducer.authenticated);
     const schema = yup.object().shape({
-        email: yup.string().required('This field is required'),
-        password: yup.string().required('This field is required')
-      });
-    const { register, handleSubmit, formState: { errors } ,reset} = useForm({resolver: yupResolver(schema)});
+        email: yup.string().required('This field is required').email("Please enter a valid email"),
+        password: yup.string().required('This field is required').min(8).max(24),
+    });
+    const { register, handleSubmit, formState: { errors }, reset} = useForm({resolver: yupResolver(schema)});
     const clickSubmit = (e) => {
         dispatch(login(data));       
-        
     }
     const change = (e) => {
         setData({ ...data, [e.target.name]: e.target.value });
     }
     if (authenticated) {
         return <Navigate to='/posts' />;
-       
     }
     return (
         <Fragment>
@@ -38,6 +36,7 @@ export const Login = () => {
             <p className='error'>{errors.password?.message}</p>
             <button className='btn' type='submit'>Login</button>
             </form>
+            <p className='error'>{error}</p>
             <p>
             Don't have an account? <Link to='/register'>Sign Up</Link>
             </p>

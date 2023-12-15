@@ -1,18 +1,31 @@
 import React, { Fragment, useState} from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link,useNavigate } from 'react-router-dom';
+import { deletePost } from '../../actions/post';
+import avatar from'./default-avatar.png';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faTrash } from "@fortawesome/free-solid-svg-icons";
 
 export const PostItem = ({ post }) => {
+    const user = useSelector((state)=> state.authReducer.user);
+    const dispatch = useDispatch();
     const [show, setShow] = useState(false);
     const navigate = useNavigate();
+    console.log(post);
+    console.log(user);
     /*<div className='postUser'>
     <img src={post.user.image}  height="40" width="auto"  />*/
+    const onDelete = (id) => {
+        dispatch(deletePost(id));
+    }
     return( 
         <div className='postItem'>
             <div className='postUser'>
-            <div>{post.user.name}</div>
+            <img src={avatar}  height="40" width="auto"  />
+            <div><b>{post.user.name}</b></div>
+            {post.user?._id === user?._id && 
+            <button onClick={(e)=> onDelete(post._id)}><FontAwesomeIcon icon={faTrash} /></button>}
             </div>
-            <div className='postTitle'>{post.title}</div>
             <Fragment>
             {post.text.length > 500 ?(
                 <Fragment>
@@ -27,8 +40,8 @@ export const PostItem = ({ post }) => {
                 <div>{post.text}</div>)
                 
             }
-            <img src={post.image} width="300" height="auto" className='postImg' />
+            <img src={post.image} width="200" height="auto" className='postImg' />
             </Fragment>
         </div>
-)
+    )
 }

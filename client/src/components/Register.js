@@ -8,6 +8,7 @@ import { registerUser } from '../actions/auth';
 
 export const Register = () => {
     const navigate = useNavigate();
+    const error = useSelector((store) => store.authReducer.error);
     const [data, setData] = useState({email: '', name: '', password: '', password2: ''});
     const schema = yup.object().shape({
         email: yup.string().required('This field is required').email("Please enter a valid email"),
@@ -43,6 +44,7 @@ export const Register = () => {
             <p className='error'>{errors.password2?.message}</p>
             <button className='btn' type='submit'>Sign Up</button>
             </form>
+            <p className='error'>{error}</p>
             <p>
             Already have an account? <Link to='/login'>Sign in</Link>
             </p>

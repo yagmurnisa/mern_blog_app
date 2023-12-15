@@ -3,7 +3,7 @@ const User = require('../models/User');
 
 const getPosts = async (req,res) => {
     try {
-        const posts = await Post.find().populate('user', ['name']);;
+        const posts = await Post.find().sort({_id:-1}).populate('user', ['name']);;
         res.status(200).json(posts);     
         console.log(posts);
     } catch (err) {
@@ -11,6 +11,7 @@ const getPosts = async (req,res) => {
         res.status(404).json(err.message);
       }
 };
+
 const searchPosts = async (req,res) => {
   try {
       const text= req.query.q;
@@ -23,6 +24,7 @@ const searchPosts = async (req,res) => {
       res.status(404).json(err.message);
     }
 };
+
 const getPost = async(req,res) => {
     try {
         const post = await Post.findById(req.params.id).populate('user', ['name']);
@@ -36,21 +38,23 @@ const getPost = async(req,res) => {
 
 const addPost = async (req,res) => {
   const user = await User.findById(req.user.id).select('-password');
+  console.log(user);
+  console.log(req.body);
   try {
         const newPost = new Post({
           user: user.id,
-          title: req.body.title,
           text: req.body.text,
           image: req.body.file,
           });
-        const post = await newPost.save();
+        const save = await newPost.save();
+        const post = await Post.findById(save._id).populate('user', ['name']);
         console.log(post);
         res.status(200).json(post);
     } catch (err) {
         console.error(err.message);
         res.status(404).json(err.message);
     }
-}
+};
 
 const deletePost = async (req,res) => {
     try {
@@ -61,10 +65,10 @@ const deletePost = async (req,res) => {
         }
     
         // Check user
-        if (post.user.toString() != req.user.id) {
+        if (post.user._id.toString() != req.user.id) {
           return res.status(401).json({ msg: 'User not authorized' });
         }
-        await post.remove();
+        await post.deleteOne();
         res.status(200).json({ msg: 'Post deleted' });
       } catch (error) {
         console.error(error.message);
@@ -75,5 +79,5 @@ const deletePost = async (req,res) => {
       }
 };
 
-module.exports = {getPosts, getPost, addPost, searchPosts};
+module.exports = {getPosts, getPost, addPost, searchPosts, deletePost};
 

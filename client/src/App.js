@@ -14,11 +14,12 @@ import store from './store';
 import { loadUser } from "./actions/auth";
 const App = () => {
   useEffect(() => {
-     if (localStorage.token) {
+    if (localStorage.token) {
       setAuthToken(localStorage.token);
       store.dispatch(loadUser());
     }
-},[]);
+  },[]);
+  
   return (
     <Provider store={store}>
     <BrowserRouter>

@@ -4,26 +4,25 @@ import { Link, Navigate, useLocation } from 'react-router-dom';
 import { getPosts } from '../../actions/post';
 import { PostForm } from './PostForm';
 import { PostItem } from './PostItem';
+import {Loading} from'../Loading';
+
 export const Posts = () => {
     const posts = useSelector((state)=> state.postReducer.posts);
     const authenticated = useSelector((state)=> state.authReducer.authenticated);
     const dispatch = useDispatch();
     const [isLoading, setIsLoading] = useState(true);
     useEffect(() => {
-        const get = () => {
-        dispatch(getPosts());
-        };
-        get(); 
+        const get = async() => {
+        await dispatch(getPosts());
         setIsLoading(false);
-       
+        }
+        get(); 
     },[]);
     if (isLoading) {
         return (
-            <h1 >
-              LOADING...
-            </h1>
+            <Loading/>
         );
-      }
+    }
     return (
         <div className='posts'>
             {authenticated && <PostForm/>}

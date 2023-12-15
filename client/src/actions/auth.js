@@ -1,4 +1,4 @@
-import { LOGIN, LOGOUT, REGISTER, USER_LOADED} from './types';
+import { LOGIN, LOGOUT, REGISTER, USER_LOADED, AUTH_ERROR} from './types';
 import axios from '../axios';
 import setAuthToken from '../setAuthToken';
 
@@ -15,8 +15,20 @@ export const login = (data) => async (dispatch) => {
       });
     }
   } catch (err) {
-    console.log(err.message);
-  }
+      console.log(err);
+      if (err.response.status == 400){
+        dispatch({
+          type: AUTH_ERROR,
+          payload: err.response.data.msg
+        })
+      }
+      else {
+        dispatch({
+          type: AUTH_ERROR,
+          payload: "An error occured"
+        })
+      }
+    }
 };
 
 export const registerUser = (data) => async(dispatch) => {
@@ -32,9 +44,22 @@ export const registerUser = (data) => async(dispatch) => {
       });
     }
   } catch (err) {
-    console.log(err.message);
-  }
+      console.log(err.message);
+      if (err.status == 400){
+        dispatch({
+          type: AUTH_ERROR,
+          payload: err.response.data.msg
+        })
+      }
+      else {
+        dispatch({
+          type: AUTH_ERROR,
+          payload: "An error occured"
+        })
+      }
+    }
 };
+
 export const loadUser = () => async (dispatch)=> {
   try {
     const res = await axios.get('/auth');
@@ -44,9 +69,23 @@ export const loadUser = () => async (dispatch)=> {
       payload: res.data
     });
   } catch (err) {
-   console.log(err.message);
-  }
-}
+      console.log(err.message);
+      if (err.status == 400){
+        dispatch({
+          type: AUTH_ERROR,
+          payload: err.response.data.msg
+        })
+      }
+      else {
+        dispatch({
+          type: AUTH_ERROR,
+          payload: "An error occured"
+        })
+      }
+    }
+};
+
 export const logout = () => (dispatch) => {
+  localStorage.removeItem("token");
   dispatch({ type: LOGOUT });
 };

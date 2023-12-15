@@ -22,8 +22,6 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.use(express.json({ extended: false }));
 connectDB();
-  
-app.get('/', (req, res) => res.send('API is Running'));
 app.use('/auth', require('./routes/auth'));
 app.use('/posts', require('./routes/posts'));
 
