@@ -1,6 +1,6 @@
 import React, { Fragment, useEffect } from "react";
 import { useSelector, useDispatch } from 'react-redux';
-import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Link, Navigate } from 'react-router-dom';
 import { Login } from './components/Login';
 import { Register } from './components/Register';
 import { Navbar } from './components/Navbar';
@@ -25,7 +25,7 @@ const App = () => {
     <BrowserRouter>
     <Navbar/>
     <Routes>
-      <Route path='/' element={<Login />} />
+      <Route exact path='/' element={<Navigate to="/login"/>} />
       <Route path='/login' element={<Login />} />
       <Route path='/register' element={<Register />} />
       <Route path='/search' element={<Search />} />

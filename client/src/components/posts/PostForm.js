@@ -22,14 +22,14 @@ export const PostForm = () => {
         <form onSubmit={(e) => sendPost(e)}>
         <textarea
           name='text'
-          cols='60'
-          rows='5'
           placeholder='Share a post'
           value={data.text}
           onChange={(e) => change(e)}/>
+          <div style={{display: 'flex', justifyContent: 'space-between'}}>
           <FileBase64 multiple={false} onDone={({base64}) => setFile(base64)}/>
+          <button className='btn' type='submit'>Send</button>
+          </div>
           <p className='error'>{error}</p>
-        <button className='btn' type='submit'>Send</button>
       </form>
     </div>
     </Fragment>

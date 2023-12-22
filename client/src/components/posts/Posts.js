@@ -11,6 +11,7 @@ export const Posts = () => {
     const authenticated = useSelector((state)=> state.authReducer.authenticated);
     const dispatch = useDispatch();
     const [isLoading, setIsLoading] = useState(true);
+
     useEffect(() => {
         const get = async() => {
         await dispatch(getPosts());
@@ -18,6 +19,7 @@ export const Posts = () => {
         }
         get(); 
     },[]);
+    
     if (isLoading) {
         return (
             <Loading/>

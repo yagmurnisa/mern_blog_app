@@ -1,13 +1,16 @@
-import React, { Fragment, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import React, { Fragment, useState, useRef } from 'react';
+import { NavLink, Link, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faSearch } from "@fortawesome/free-solid-svg-icons";
+import { faSearch, faBars, faTimes } from "@fortawesome/free-solid-svg-icons";
 
 export const Navbar = () => {
   const [search, setSearch] = useState('');
+  const navRef = useRef();
   const navigate = useNavigate();
   const authenticated = useSelector((store) => store.authReducer.authenticated);
+  const [showLink, setShowLink] = useState(false);
+  const [showSearch, setshowSearch] = useState(false);
 
   const handleSearch = (e) => {
     e.preventDefault();
@@ -15,28 +18,33 @@ export const Navbar = () => {
       navigate(`/search?q=${search}`);
     }
   };
-
   return (
     <Fragment>
-    <div className='navbar'>
-      <h1><Link className='navLink' style={{textDecoration: 'none'}} to='/posts'>BLOG</Link></h1>
-      <div className='navInner'>
-        <form onSubmit={(e)=> handleSearch(e)}>
+    <nav>
+      <div className='logo'>BLOG</div>
+      <button className='searchbtn' onClick={()=> {setshowSearch(!showSearch); setShowLink(false)}}>{showSearch ? <FontAwesomeIcon icon={faTimes} color="#333333"/> : <FontAwesomeIcon icon={faSearch} color="#333333"/>}</button>
+        <form className={showSearch ? "open": ""} onSubmit={(e)=> handleSearch(e)}>
           <input type='text' placeholder='Search' value={search} onChange={(e)=> {setSearch(e.target.value)}}/>
-          <button type='submit'><FontAwesomeIcon icon={faSearch}  color="gray" /></button>
+          <button type='submit'><FontAwesomeIcon icon={faSearch} color="#333333"/></button>
         </form>
-        {!authenticated &&
-        <ul>
+        <button className='togglebtn' onClick={()=> {setShowLink(!showLink); setshowSearch(false)}}>
+        {showLink ? <FontAwesomeIcon icon={faTimes} color="#333333"/> : <FontAwesomeIcon icon={faBars} color="#333333"/>}
+        </button>
+        <ul className={showLink ? "open": ""}>
+        {!authenticated && 
+        <>
           <li>
-            <Link className='navLink' to='/login'>Login</Link>
+            <NavLink className='navLink' to='/login'>Login</NavLink>
           </li>
           <li>
-            <Link className='navLink'  to='/register'>Register</Link>
+            <NavLink className='navLink' to='/register'>Register</NavLink>
+          </li> 
+        </>}
+          <li>
+            <NavLink className='navLink' to='/posts'>Posts</NavLink>
           </li>
-        </ul>}
-        
-      </div>
-    </div>
+        </ul>
+    </nav>
     </Fragment>
   )
 }

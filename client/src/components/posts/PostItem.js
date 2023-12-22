@@ -24,7 +24,7 @@ export const PostItem = ({ post }) => {
             <img src={avatar}  height="40" width="auto"  />
             <div><b>{post.user.name}</b></div>
             {post.user?._id === user?._id && 
-            <button onClick={(e)=> onDelete(post._id)}><FontAwesomeIcon icon={faTrash} /></button>}
+            <button style={{marginLeft: 'auto'}}onClick={(e)=> onDelete(post._id)}><FontAwesomeIcon icon={faTrash}/></button>}
             </div>
             <Fragment>
             {post.text.length > 500 ?(
