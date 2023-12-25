@@ -3,8 +3,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Link, Navigate, useLocation } from 'react-router-dom';
 import { getPosts } from '../../actions/post';
 import { PostForm } from './PostForm';
-import { PostItem } from './PostItem';
-import {Loading} from'../Loading';
+import PostItem from './PostItem';
+import { Loading } from'../Loading';
 
 export const Posts = () => {
     const posts = useSelector((state)=> state.postReducer.posts);

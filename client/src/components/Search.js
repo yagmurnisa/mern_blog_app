@@ -2,8 +2,8 @@ import React, { useState, Fragment, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { searchPosts } from '../actions/post';
 import { useSelector, useDispatch } from 'react-redux';
-import { PostItem } from './posts/PostItem';
-import {Loading} from'./Loading';
+import PostItem from './posts/PostItem';
+import { Loading } from'./Loading';
 
 export const Search = () => {
     const location = useLocation();

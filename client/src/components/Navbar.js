@@ -1,13 +1,15 @@
 import React, { Fragment, useState, useRef } from 'react';
 import { NavLink, Link, useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSearch, faBars, faTimes } from "@fortawesome/free-solid-svg-icons";
+import { logout } from '../actions/auth';
 
 export const Navbar = () => {
   const [search, setSearch] = useState('');
   const navRef = useRef();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const authenticated = useSelector((store) => store.authReducer.authenticated);
   const [showLink, setShowLink] = useState(false);
   const [showSearch, setshowSearch] = useState(false);
@@ -18,6 +20,9 @@ export const Navbar = () => {
       navigate(`/search?q=${search}`);
     }
   };
+  const logoutfunc = () => {
+    dispatch(logout());
+  }
   return (
     <Fragment>
     <nav>
@@ -31,7 +36,10 @@ export const Navbar = () => {
         {showLink ? <FontAwesomeIcon icon={faTimes} color="#333333"/> : <FontAwesomeIcon icon={faBars} color="#333333"/>}
         </button>
         <ul className={showLink ? "open": ""}>
-        {!authenticated && 
+        <li>
+            <NavLink className='navLink' to='/posts'>Posts</NavLink>
+          </li>
+        {!authenticated ? (
         <>
           <li>
             <NavLink className='navLink' to='/login'>Login</NavLink>
@@ -39,10 +47,12 @@ export const Navbar = () => {
           <li>
             <NavLink className='navLink' to='/register'>Register</NavLink>
           </li> 
-        </>}
+        </>) : (
+          <>
           <li>
-            <NavLink className='navLink' to='/posts'>Posts</NavLink>
+            <a className='navLink' onClick={logoutfunc} href='#!'>Log out</a>
           </li>
+          </>)}
         </ul>
     </nav>
     </Fragment>

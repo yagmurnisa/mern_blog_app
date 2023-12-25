@@ -15,6 +15,8 @@ export const PostForm = () => {
   const sendPost = (e) => {
     e.preventDefault();
     dispatch(addPost({...data, file}));
+    setData({text: ''});
+    setFile(null);
   }
   return (
     <Fragment>
@@ -25,7 +27,7 @@ export const PostForm = () => {
           placeholder='Share a post'
           value={data.text}
           onChange={(e) => change(e)}/>
-          <div style={{display: 'flex', justifyContent: 'space-between'}}>
+          <div style={{display: 'flex', justifyContent: 'space-between', marginBottom: '30px'}}>
           <FileBase64 multiple={false} onDone={({base64}) => setFile(base64)}/>
           <button className='btn' type='submit'>Send</button>
           </div>

@@ -1,4 +1,4 @@
-import React, { Fragment, useState} from 'react';
+import React, { Fragment, memo, useState} from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link,useNavigate } from 'react-router-dom';
 import { deletePost } from '../../actions/post';
@@ -6,13 +6,12 @@ import avatar from'./default-avatar.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 
-export const PostItem = ({ post }) => {
+const PostItem = ({ post }) => {
     const user = useSelector((state)=> state.authReducer.user);
     const dispatch = useDispatch();
     const [show, setShow] = useState(false);
     const navigate = useNavigate();
-    console.log(post);
-    console.log(user);
+    console.log("render");
     /*<div className='postUser'>
     <img src={post.user.image}  height="40" width="auto"  />*/
     const onDelete = (id) => {
@@ -45,3 +44,4 @@ export const PostItem = ({ post }) => {
         </div>
     )
 }
+export default memo(PostItem);
